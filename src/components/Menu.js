@@ -1,10 +1,38 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { handleSuccess, handleError } from "../util.js";
+import { ToastContainer } from "react-toastify";
+import "./Menu.css";
 
 const Menu = () => {
     const [selectedMenu, setSelectedMenu] = useState(0);
     const [isProfileDropDown, setIsProfileDropDown] = useState(false);
+
+    //Login State  & Logout Functionality
+    const [loggedInUser, setLoggedInUser] = useState("");
+    const navigate = useNavigate();
+    useEffect(() => {
+        setLoggedInUser(localStorage.getItem("loggedInUser"));
+    }, []);
+
+    const handleLogout = (e) => {
+        e.stopPropagation(); // Prevent triggering parent onClick
+
+        // Clear localStorage
+        localStorage.removeItem("token");
+        localStorage.removeItem("loggedInUser");
+
+        // Optional: clear cookie from backend
+        fetch("http://localhost:8080/auth/logout", {
+            method: "POST",
+            credentials: "include", // send cookies
+        }).catch((err) => console.error(err));
+        handleSuccess("Logged out successfully");
+
+        // Redirect to frontend homepage
+        window.location.href = "http://localhost:3000";
+    };
 
     const handleMenuClick = (index) => {
         setSelectedMenu(index);
@@ -128,8 +156,14 @@ const Menu = () => {
                 <hr />
                 <div className="profile" onClick={handleProfileClick}>
                     <div className="avatar">ZU</div>
-                    <p className="username">USERID</p>
+                    <p className="username">
+                        {localStorage.getItem("loggedInUser") || "USERID"}
+                    </p>
+                    <button className="logout-btn" onClick={handleLogout}>
+                        Logout
+                    </button>
                 </div>
+                <ToastContainer />
             </div>
         </div>
     );
