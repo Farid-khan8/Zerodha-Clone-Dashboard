@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios, { all } from "axios";
 import { VerticalGraph } from "./VerticalGraph";
 import { handleError, handleSuccess } from "../util.js";
+import { BACKEND_URL } from "../config.js";
 
 // import { holdings } from "../data/data"; //--this is replaced by api call to backend database coming from mongoDB
 
@@ -15,7 +16,7 @@ const Holdings = () => {
         const fetchHoldings = async () => {
             setLoading(true); // Start loading
             try {
-                const res = await fetch("http://localhost:8080/allholdings", {
+                const res = await fetch(`${BACKEND_URL}/allholdings`, {
                     method: "GET",
                     credentials: "include", // ✅ send the cookie automatically
                 });

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { handleSuccess, handleError } from "../util.js";
 import { ToastContainer } from "react-toastify";
 import "./Menu.css";
+import { BACKEND_URL, FRONTEND_URL } from "../config.js";
 
 const Menu = () => {
     const [selectedMenu, setSelectedMenu] = useState(0);
@@ -24,14 +25,14 @@ const Menu = () => {
         localStorage.removeItem("loggedInUser");
 
         // Optional: clear cookie from backend
-        fetch("http://localhost:8080/auth/logout", {
+        fetch(`${BACKEND_URL}/auth/logout`, {
             method: "POST",
             credentials: "include", // send cookies
         }).catch((err) => console.error(err));
         handleSuccess("Logged out successfully");
 
         // Redirect to frontend homepage
-        window.location.href = "http://localhost:3000";
+        window.location.href = FRONTEND_URL;
     };
 
     const handleMenuClick = (index) => {

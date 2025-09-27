@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios, { all } from "axios";
 import { handleError, handleSuccess } from "../util.js";
+import { BACKEND_URL } from "../config.js";
 
 // import { positions } from "../data/data"; //--this is replaced by api call to backend database coming from mongoDB
 
@@ -14,7 +15,7 @@ const Positions = () => {
         const fetchPositions = async () => {
             setLoading(true);
             try {
-                const res = await fetch("http://localhost:8080/allpositions", {
+                const res = await fetch(`${BACKEND_URL}/allpositions`, {
                     method: "GET",
                     credentials: "include",
                 });

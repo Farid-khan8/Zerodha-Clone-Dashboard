@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import GeneralContext from "./GeneralContext";
+import { BACKEND_URL } from "../config.js";
 
 import "./BuyActionWindow.css";
 import { Button } from "@mui/material";
@@ -12,7 +13,7 @@ const SellActionWindow = ({ uid }) => {
     const { closeSellWindow } = useContext(GeneralContext);
 
     const handleSellClick = () => {
-        axios.post("http://localhost:8080/neworder", {
+        axios.post(`${BACKEND_URL}/neworder`, {
             name: uid,
             qty: stockQuantity,
             price: stockPrice,
