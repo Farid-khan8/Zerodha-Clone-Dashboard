@@ -54,13 +54,19 @@ const ProtectedRoute = ({ children }) => {
             try {
                 // FIXED: Get JWT token from localStorage instead of relying on cookies
                 const token = localStorage.getItem("authToken");
+                console.log("Dashboard: Token from localStorage:", token); // Add this line for debugging
 
                 if (!token) {
-                    console.log("No token found in localStorage");
+                    console.log("No token found in localStorage"); // Add this line for debugging
                     setIsAuthenticated(false);
                     setLoading(false);
                     return;
                 }
+
+                console.log(
+                    "Dashboard: Making auth check to:",
+                    `${BACKEND_URL}/auth/check`
+                ); // Add this line for debugging
 
                 // FIXED: Send token in Authorization header instead of cookies
                 const res = await fetch(`${BACKEND_URL}/auth/check`, {
@@ -70,8 +76,14 @@ const ProtectedRoute = ({ children }) => {
                         "Content-Type": "application/json",
                     },
                 });
+                console.log(
+                    "Dashboard: Auth check response status:",
+                    res.status
+                ); // Add this line for debugging
 
                 const result = await res.json();
+                console.log("Dashboard: Auth check result:", result); // Add this line for debugging
+
                 setIsAuthenticated(result.success);
                 setLoading(false);
             } catch (err) {
